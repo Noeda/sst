@@ -168,11 +168,17 @@ static const __u32 EXEC_WRITE_FILE_ACCESS_DIR =
     LANDLOCK_ACCESS_FS_READ_FILE |
     LANDLOCK_ACCESS_FS_READ_DIR |
     LANDLOCK_ACCESS_FS_WRITE_FILE |
+    LANDLOCK_ACCESS_FS_REMOVE_FILE |
+    LANDLOCK_ACCESS_FS_REMOVE_DIR |
+    LANDLOCK_ACCESS_FS_MAKE_REG |
+    LANDLOCK_ACCESS_FS_MAKE_DIR |
+    LANDLOCK_ACCESS_FS_MAKE_SYM |
     LANDLOCK_ACCESS_FS_TRUNCATE |
     LANDLOCK_ACCESS_FS_IOCTL_DEV;
 ```
 
-Landlock itself is much more fine-grained; so this is a missing feature in `sst`.
+Landlock itself is a bit more fine-grained (and likely will be more so in the
+future); so this is a missing feature in `sst`.
 
 The current set of options you can set reflect my own use of this tool, but I
 will expand and improve over time if I find a good design for it.
