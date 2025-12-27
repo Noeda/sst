@@ -83,6 +83,8 @@ Add `PATH_BENEATH_WRITE:<directory>` as needed to allow selectively write access
 
 ## Sandboxing
 
+You might be interested in CHEATSHEET.md in this repository for an uncluttered "cheat sheet" version of this information.
+
 ### Filesystem-related sandboxing
 
 To use any options below, you must specify, somewhere, on the command line,
