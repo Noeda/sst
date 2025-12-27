@@ -94,6 +94,8 @@ Add `PATH_BENEATH_WRITE:<directory>` as needed to allow selectively write access
 
 You might be interested in `CHEATSHEET.md` in this repository for an uncluttered "cheat sheet" version of this information.
 
+Forbidden operations generally result in an `EPERM` error given to the caller; refer to Landlock documentation for details.
+
 ### Filesystem-related sandboxing
 
 To use any options below, you must specify, somewhere, on the command line,
