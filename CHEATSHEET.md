@@ -1,6 +1,6 @@
 # SST cheatsheet
 
-```console
+```bash
 $ sst option1 option2 optionN -- command arg1 arg2 argN
 ```
 
