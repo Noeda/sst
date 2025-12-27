@@ -150,10 +150,10 @@ expecting to be sandboxed (i.e. software by unscrupulous tech companies filled
 with telemetry or some other user-hostile code), or they are not hostile
 programs to begin with.
 
-Future improvements to this script might be about adding features to help with
+Future improvements to `sst` might be about adding features to help with
 *observability* rather than sandboxing. Landlock itself has some amount of
 "audit features" but I have not studied them as of writing this section right
-now, or if it makes sense to put such features into this script specifically.
+now, or if it makes sense to put such features into `sst` specifically.
 
 ### Filesystem sandboxing may be overly restrictive.
 
