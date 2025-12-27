@@ -179,6 +179,17 @@ as soon as my system gets updated enough to have it in the installed Kernel head
 able to test it conveniently. One of the use cases of this sandboxing is to stop unwanted telemetry,
 but if the telemetry uses UDP it kind of defeats the point of sandboxing.
 
+### I suck at naming
+
+Networking uses the `ALLOW` verb, e.g. `ALLOW_INCOMING_TCP_PORT`.
+
+Filesystem settings however use no such verbiage. Inconsistent.
+
+Also my names are long and capitalized and they look like they are shouting.
+
+I might at some point add better designed names as aliases; the current names
+are what they are because I accidentally got used to them.
+
 ## License
 
 GPL3 only.
