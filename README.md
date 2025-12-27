@@ -12,6 +12,23 @@ designed to be usable from a position of unprivileged usercode.
 If you know what is bubblewrap and `bwrap`, then this program is similar except
 it is purely and only focused on Linux Landlock-provided features.
 
+## Compiling
+
+If you have a Linux machine with development tools, then `make` hopefully
+suffices. It will compile `sst` to the current directory.
+
+```
+$ make
+$ ./sst <options here>
+```
+
+`sst.c` is, on purpose, a single file with no dependencies other than Kernel headers, so you could also try:
+
+```
+$ gcc -Wall -O2 sst.c -o sst
+$ ./sst <options here>
+```
+
 ## Usage
 
 The command line tool is called `sst` (for "Simple Sandboxer Tool"). By default, it will
