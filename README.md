@@ -157,7 +157,7 @@ now, or if it makes sense to put such features into `sst` specifically.
 
 ### Filesystem sandboxing may be overly restrictive.
 
-The filesystem restrictions restrict a lot of operations; the most permissive
+The `sst` filesystem restrictions restrict a lot of operations; the most permissive
 setting you can set (while also having filesystem sandboxing on at all) is this combo:
 
 ```c
@@ -169,9 +169,10 @@ static const __u32 EXEC_WRITE_FILE_ACCESS =
     LANDLOCK_ACCESS_FS_TRUNCATE;
 ```
 
-There are a lot more filesystem flags within Landlock, but they are not exposed
-through `sst`. The current set of options you can set reflect my own use of this tool, but I will
-expand and improve over time if I find a good design for it.
+Landlock itself is much more fine-grained; so this is a missing feature in `sst`.
+
+The current set of options you can set reflect my own use of this tool, but I
+will expand and improve over time if I find a good design for it.
 
 Non-TCP networking is not blocked at all (e.g. UDP, used in HTTP3/QUIC). I will likely add it
 as soon as my system gets updated enough to have it in the installed Kernel headers and I am
