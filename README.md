@@ -1,16 +1,17 @@
 # Simple sandboxer tool
 
 `sst` (Simple sandboxer tool) is a small CLI tool that will run some other
-program while under some sandboxing, using Linux Landlock API.
+program while applying sandboxing, using Linux Landlock API. It requires no
+root privileges to run and it is trying to be "as little fuss" as possible; a
+single `sst.c`-file implementation that only demands a C compiler and some Linux
+kernel headers to compile.
 
-It is implemented in a single, free-standing `sst.c` file with no dependencies beyond having
-a C compiler available.
+Example sandboxing to make a program only accept connections on TCP port 5000
+and no filesystem write access:
 
-`sst` does not need root or any privileges itself; courtesy of Linux Landlock being
-designed to be usable from a position of unprivileged usercode.
-
-If you know what is bubblewrap and `bwrap`, then this program is similar except
-it is purely and only focused on Linux Landlock-provided features.
+```console
+$ sst ENABLE_NETWORK_SANDBOXING ENABLE_FILESYSTEM_SANDBOXING ALLOW_INCOMING_TCP_PORT:5000 PATH_BENEATH_EXEC:/ -- java -jar some-program.jar
+```
 
 ## Compiling
 
