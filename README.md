@@ -141,7 +141,7 @@ methods depending on what am I dealing with.
 
 Here are some use cases I've used this for so far:
 
-  1) stop unwanted telemetry (my original motivation; in late 2025 I touched a JavaScript framework with some particularly facetious attitude about telemetry and got annoyed :-)
+  1) stop unwanted telemetry (my original motivation; in late 2025 I touched a JavaScript framework with a particularly facetious attitude about telemetry and got annoyed :-)
   2) sandbox my own applications. I especially do this with software that I have to deal with and that is exposed to the Internet; e.g. Minecraft servers, <insert your latest 21st century Web/JavaScript thingamajig framework>-based applications.
 
 I consider this to be, at best, one layer of defense, and I think at the moment
