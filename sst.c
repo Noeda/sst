@@ -611,12 +611,11 @@ int main(int argc, char **argv, char *const *const envp) {
         fatal_error("no sandboxing options given");
     }
 
-    int abi = landlock_create_ruleset(NULL, 0, LANDLOCK_CREATE_RULESET_VERSION);
+    const int abi = landlock_create_ruleset(NULL, 0, LANDLOCK_CREATE_RULESET_VERSION);
     if (abi < 0) {
-        const int err = errno;
-        if (err == ENOSYS) {
+        if (errno == ENOSYS) {
             fatal_error("Landlock is not supported by the kernel (ENOSYS)");
-        } else if (err == EOPNOTSUPP) {
+        } else if (errno == EOPNOTSUPP) {
             fatal_error("Landlock is disabled in the kernel (EOPNOTSUPP)");
         } else {
             fatal_error_errno("landlock_create_ruleset failed");
