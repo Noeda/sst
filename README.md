@@ -17,14 +17,14 @@ it is purely and only focused on Linux Landlock-provided features.
 If you have a Linux machine with development tools, then `make` hopefully
 suffices. It will compile `sst` to the current directory.
 
-```
+```console
 $ make
 $ ./sst <options here>
 ```
 
 `sst.c` is, on purpose, a single file with no dependencies other than Kernel headers, so you could also try:
 
-```
+```console
 $ gcc -Wall -O2 sst.c -o sst
 $ ./sst <options here>
 ```
@@ -34,7 +34,7 @@ $ ./sst <options here>
 The command line tool is called `sst` (for "Simple Sandboxer Tool"). By default, it will
 not restrict anything.
 
-```
+```console
 $ sst <options...> -- <command> <arg1> <arg2> ... <argN>
 ```
 
@@ -50,7 +50,7 @@ cannot increase privileges under Landlock.
 
 Open a shell that can't do (TCP) networking:
 
-```
+```console
 $ sst ENABLE_NETWORK_SANDBOXING -- bash
 $ nc -v example.org 80
 Warning: inverse host lookup failed for 104.18.3.24:
@@ -63,7 +63,7 @@ elsewhere in this `README.md`. They would still work.).
 
 Run a program with a read-only root and some directories with write permission:
 
-```
+```console
 $ sst ENABLE_FILESYSTEM_SANDBOXING PATH_BENEATH_EXEC:/ PATH_BENEATH_WRITE:/workspace/my_program -- my_program --option 123
 ```
 
@@ -73,7 +73,7 @@ This is often my starting point when I design a sandboxer for some program.
 
 This stops networking and stops filesystem write access entirely. The root is set to `PATH_BENEATH_EXEC` which lets the opened `bash` shell to execute and run commands; but none of these commands can leave a mark on the filesystem.
 
-```
+```console
 $ sst ENABLE_FILESYSTEM_SANDBOXING ENABLE_NETWORK_SANDBOXING PATH_BENEATH_EXEC:/ -- bash
 ```
 
@@ -151,7 +151,7 @@ now, or if it makes sense to put such features into this script specifically.
 The filesystem restrictions restrict a lot of operations; the most permissive
 setting you can set (while also having filesystem sandboxing on at all) is this combo:
 
-```
+```c
 static const __u32 EXEC_WRITE_FILE_ACCESS =
     LANDLOCK_ACCESS_FS_EXECUTE |
     LANDLOCK_ACCESS_FS_READ_FILE |

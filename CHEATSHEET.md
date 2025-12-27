@@ -1,5 +1,9 @@
 # SST cheatsheet
 
+```console
+$ sst option1 option2 optionN -- command arg1 arg2 argN
+```
+
 ## Filesystem
 
 - `FILE_READ:<path>`
