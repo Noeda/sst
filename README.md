@@ -6,10 +6,16 @@ root privileges to run and it is trying to be "as little fuss" as possible; a
 single `sst.c`-file implementation that only demands a C compiler and some Linux
 kernel headers to compile.
 
-Example sandboxing to make a program only accept connections on TCP port 5000
-and no filesystem write access:
+Example:
 
 ```console
+# What this does:
+#
+# 1) No outgoing TCP connections
+# 2) Incoming TCP connections only allowed on port 5000
+# 3) No filesystem write access
+#
+
 $ sst ENABLE_NETWORK_SANDBOXING ENABLE_FILESYSTEM_SANDBOXING ALLOW_INCOMING_TCP_PORT:5000 PATH_BENEATH_EXEC:/ -- java -jar some-program.jar
 ```
 
