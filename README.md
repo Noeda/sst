@@ -101,16 +101,16 @@ before the `--` separator, the trigger option word `ENABLE_FILESYSTEM_SANDBOXING
 enables the use of the options below, and it also restricts all filesystem access except
 the ones specified.
 
-- `FILE_READ:<path>`: allow reading from a specific file. The file has to be an actual file, not a directory. Executing the file is not allowed.
-- `FILE_EXEC:<path>`: same as `FILE_READ` but adds execution privileges.
-- `FILE_WRITE:<path>`: same as `FILE_READ` but adds write privileges (not execution privileges).
-- `FILE_EXEC_WRITE:<path>`: combined `FILE_EXEC` and `FILE_WRITE` (you can also separately specify them).
-- `FILE_WRITE_EXEC:<path>`: alias for `FILE_EXEC_WRITE`.
-- `PATH_BENEATH_READ:<path>`: allow reading (not executing) everything under `<path>`. The path must refer to a directory.
-- `PATH_BENEATH_EXEC:<path>`: same as `PATH_BENEATH_READ` but also gives execution privileges.
-- `PATH_BENEATH_WRITE:<path>`: same as `PATH_BENEATH_READ` but also gives write privileges.
-- `PATH_BENEATH_EXEC_WRITE:<path>`: combined `PATH_BENEATH_EXEC` and `PATH_BENEATH_WRITE` (you can also separately specify them).
-- `PATH_BENEATH_WRITE_EXEC:<path>`: alias for `PATH_BENEATH_EXEC_WRITE`.
+- `FILE_READ:<filepath>`: allow reading from a specific file. The file has to be an actual file, not a directory. Executing the file is not allowed.
+- `FILE_EXEC:<filepath>`: same as `FILE_READ` but adds execution privileges.
+- `FILE_WRITE:<filepath>`: same as `FILE_READ` but adds write privileges (not execution privileges).
+- `FILE_EXEC_WRITE:<filepath>`: combined `FILE_EXEC` and `FILE_WRITE` (you can also separately specify them).
+- `FILE_WRITE_EXEC:<filepath>`: alias for `FILE_EXEC_WRITE`.
+- `PATH_BENEATH_READ:<dir>`: allow reading (not executing) everything under `<dir>`. The path must refer to a directory.
+- `PATH_BENEATH_EXEC:<dir>`: same as `PATH_BENEATH_READ` but also gives execution privileges.
+- `PATH_BENEATH_WRITE:<dir>`: same as `PATH_BENEATH_READ` but also gives write privileges.
+- `PATH_BENEATH_EXEC_WRITE:<dir>`: combined `PATH_BENEATH_EXEC` and `PATH_BENEATH_WRITE` (you can also separately specify them).
+- `PATH_BENEATH_WRITE_EXEC:<dir>`: alias for `PATH_BENEATH_EXEC_WRITE`.
 
 ### Networking-related sandboxing
 

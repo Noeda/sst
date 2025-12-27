@@ -11,18 +11,18 @@ $ sst option1 option2 optionN -- command arg1 arg2 argN
 
 ## Filesystem
 
-- `FILE_READ:<path>`
-- `FILE_EXEC:<path>`
-- `FILE_WRITE:<path>`
-- `FILE_EXEC_WRITE:<path>`
-- `FILE_WRITE_EXEC:<path>` [1]
-- `PATH_BENEATH_READ:<path>`
-- `PATH_BENEATH_EXEC:<path>`
-- `PATH_BENEATH_WRITE:<path>`
-- `PATH_BENEATH_EXEC_WRITE:<path>`
-- `PATH_BENEATH_WRITE_EXEC:<path>` [1]
+- `FILE_READ:<filepath>`
+- `FILE_EXEC:<filepath>`
+- `FILE_WRITE:<filepath>`
+- `FILE_EXEC_WRITE:<filepath>`
+- `FILE_WRITE_EXEC:<filepath>` [1]
+- `PATH_BENEATH_READ:<dir>`
+- `PATH_BENEATH_EXEC:<dir>`
+- `PATH_BENEATH_WRITE:<dir>`
+- `PATH_BENEATH_EXEC_WRITE:<dir>`
+- `PATH_BENEATH_WRITE_EXEC:<dir>` [1]
 
-`FILE` refers to regular files. `PATH_BENEATH` must be used with directories.
+`FILE` must be used with regular files. `PATH_BENEATH` must be used with directories.
 
 [1] `WRITE_EXEC` is alias for `EXEC_WRITE`
 
