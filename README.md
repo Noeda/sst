@@ -19,6 +19,8 @@ Example:
 $ sst ENABLE_NETWORK_SANDBOXING ENABLE_FILESYSTEM_SANDBOXING ALLOW_INCOMING_TCP_PORT:5000 PATH_BENEATH_EXEC:/ -- java -jar some-program.jar
 ```
 
+See `CHEATSHEET.md` in this repository for a quick reference.
+
 ## Compiling
 
 If you have a Linux machine with development tools, then `make` hopefully
@@ -90,7 +92,7 @@ Add `PATH_BENEATH_WRITE:<directory>` as needed to allow selectively write access
 
 ## Sandboxing
 
-You might be interested in CHEATSHEET.md in this repository for an uncluttered "cheat sheet" version of this information.
+You might be interested in `CHEATSHEET.md` in this repository for an uncluttered "cheat sheet" version of this information.
 
 ### Filesystem-related sandboxing
 

@@ -4,6 +4,11 @@
 $ sst option1 option2 optionN -- command arg1 arg2 argN
 ```
 
+## Sandboxing enable options
+
+- `ENABLE_FILESYSTEM_SANDBOXING`
+- `ENABLE_NETWORK_SANDBOXING`
+
 ## Filesystem
 
 - `FILE_READ:<path>`
