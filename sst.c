@@ -141,12 +141,12 @@ static int parse_port(const char *str, long *port_out) {
     return 0;
 }
 
-static int is_regular_file(int fd) {
+static int is_filelike(int fd) {
     struct stat sb;
     if (fstat(fd, &sb) != 0) {
         return -1;
     }
-    return S_ISREG(sb.st_mode);
+    return S_ISREG(sb.st_mode) || S_ISBLK(sb.st_mode) || S_ISCHR(sb.st_mode);
 }
 
 static int is_directory(int fd) {
@@ -175,28 +175,49 @@ static const __u32 FULL_FS_ACCESS =
     LANDLOCK_ACCESS_FS_TRUNCATE |
     LANDLOCK_ACCESS_FS_IOCTL_DEV;
 
-static const __u32 READ_ACCESS =
+static const __u32 READ_ACCESS_FILELIKE =
+    LANDLOCK_ACCESS_FS_READ_FILE;
+
+static const __u32 READ_ACCESS_DIR =
     LANDLOCK_ACCESS_FS_READ_FILE |
     LANDLOCK_ACCESS_FS_READ_DIR;
 
-static const __u32 READ_EXEC_ACCESS =
+static const __u32 READ_EXEC_ACCESS_FILELIKE =
+    LANDLOCK_ACCESS_FS_EXECUTE |
+    LANDLOCK_ACCESS_FS_READ_FILE;
+
+static const __u32 READ_EXEC_ACCESS_DIR =
     LANDLOCK_ACCESS_FS_EXECUTE |
     LANDLOCK_ACCESS_FS_READ_FILE |
-    LANDLOCK_ACCESS_FS_READ_DIR |
     LANDLOCK_ACCESS_FS_READ_DIR;
 
-static const __u32 READ_WRITE_ACCESS =
+static const __u32 READ_WRITE_ACCESS_FILELIKE =
+    LANDLOCK_ACCESS_FS_READ_FILE |
+    LANDLOCK_ACCESS_FS_WRITE_FILE |
+    LANDLOCK_ACCESS_FS_TRUNCATE |
+    LANDLOCK_ACCESS_FS_IOCTL_DEV;
+
+static const __u32 READ_WRITE_ACCESS_DIR =
     LANDLOCK_ACCESS_FS_READ_FILE |
     LANDLOCK_ACCESS_FS_READ_DIR |
     LANDLOCK_ACCESS_FS_WRITE_FILE |
-    LANDLOCK_ACCESS_FS_TRUNCATE;
+    LANDLOCK_ACCESS_FS_TRUNCATE |
+    LANDLOCK_ACCESS_FS_IOCTL_DEV;
 
-static const __u32 EXEC_WRITE_FILE_ACCESS =
+static const __u32 EXEC_WRITE_FILE_ACCESS_FILELIKE =
+    LANDLOCK_ACCESS_FS_EXECUTE |
+    LANDLOCK_ACCESS_FS_READ_FILE |
+    LANDLOCK_ACCESS_FS_WRITE_FILE |
+    LANDLOCK_ACCESS_FS_TRUNCATE |
+    LANDLOCK_ACCESS_FS_IOCTL_DEV;
+
+static const __u32 EXEC_WRITE_FILE_ACCESS_DIR =
     LANDLOCK_ACCESS_FS_EXECUTE |
     LANDLOCK_ACCESS_FS_READ_FILE |
     LANDLOCK_ACCESS_FS_READ_DIR |
     LANDLOCK_ACCESS_FS_WRITE_FILE |
-    LANDLOCK_ACCESS_FS_TRUNCATE;
+    LANDLOCK_ACCESS_FS_TRUNCATE |
+    LANDLOCK_ACCESS_FS_IOCTL_DEV;
 
 static void show_help(FILE* out) {
     // This is basically CHEATSHEET.md but slightly better formatted for
@@ -231,7 +252,9 @@ static void show_help(FILE* out) {
     fprintf(out, "    PATH_BENEATH_EXEC_WRITE:<dir>\n");
     fprintf(out, "    PATH_BENEATH_WRITE_EXEC:<dir>\n");
     fprintf(out, "\n");
-    fprintf(out, "FILE_* must be used with regular files. PATH_BENEATH_* must be used with directories.\n");
+    fprintf(out, "FILE_* must be used with 'file-like' files (currently this means: regular\n");
+    fprintf(out, "files, block devices or character devices). PATH_BENEATH_* must be used with\n");
+    fprintf(out, "directories.\n");
     fprintf(out, "\n");
     fprintf(out, "Networking-related permissions:\n");
     fprintf(out, "\n");
@@ -349,7 +372,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 0;
-            fs_rules[fs_rule_count].access = READ_ACCESS;
+            fs_rules[fs_rule_count].access = READ_ACCESS_FILELIKE;
             fs_rule_count++;
             continue;
         }
@@ -376,7 +399,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 0;
-            fs_rules[fs_rule_count].access = READ_EXEC_ACCESS;
+            fs_rules[fs_rule_count].access = READ_EXEC_ACCESS_FILELIKE;
             fs_rule_count++;
             continue;
         }
@@ -403,7 +426,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 0;
-            fs_rules[fs_rule_count].access = READ_WRITE_ACCESS;
+            fs_rules[fs_rule_count].access = READ_WRITE_ACCESS_FILELIKE;
             fs_rule_count++;
             continue;
         }
@@ -431,7 +454,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 0;
-            fs_rules[fs_rule_count].access = EXEC_WRITE_FILE_ACCESS;
+            fs_rules[fs_rule_count].access = EXEC_WRITE_FILE_ACCESS_FILELIKE;
             fs_rule_count++;
             continue;
         }
@@ -458,7 +481,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 1;
-            fs_rules[fs_rule_count].access = READ_ACCESS;
+            fs_rules[fs_rule_count].access = READ_ACCESS_DIR;
             fs_rule_count++;
             continue;
         }
@@ -485,7 +508,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 1;
-            fs_rules[fs_rule_count].access = READ_EXEC_ACCESS;
+            fs_rules[fs_rule_count].access = READ_EXEC_ACCESS_DIR;
             fs_rule_count++;
             continue;
         }
@@ -512,7 +535,7 @@ int main(int argc, char **argv, char *const *const envp) {
                 fatal_error_errno("strdup(...) failed.");
             }
             fs_rules[fs_rule_count].is_directory = 1;
-            fs_rules[fs_rule_count].access = READ_WRITE_ACCESS;
+            fs_rules[fs_rule_count].access = READ_WRITE_ACCESS_DIR;
             fs_rule_count++;
             continue;
         }
@@ -540,7 +563,7 @@ int main(int argc, char **argv, char *const *const envp) {
             }
 
             fs_rules[fs_rule_count].is_directory = 1;
-            fs_rules[fs_rule_count].access = EXEC_WRITE_FILE_ACCESS;
+            fs_rules[fs_rule_count].access = EXEC_WRITE_FILE_ACCESS_DIR;
             fs_rule_count++;
             continue;
         }
@@ -683,11 +706,11 @@ int main(int argc, char **argv, char *const *const envp) {
             }
         } else {
             fd = open(path, O_RDWR | O_CLOEXEC);
-            const int is_reg = is_regular_file(fd);
+            const int is_reg = is_filelike(fd);
             if (is_reg < 0) {
                 fatal_error_errno("Cannot invoke fstat on '%s'", path);
             } else if (!is_reg) {
-                fatal_error("FILE_*: '%s' is not a regular file", path);
+                fatal_error("FILE_*: '%s' is not a file-like entity.", path);
             }
         }
 
@@ -697,11 +720,11 @@ int main(int argc, char **argv, char *const *const envp) {
 
         struct landlock_path_beneath_attr path_attr = {
             .parent_fd = fd,
-            .allowed_access = fs_rules[i].access
+            .allowed_access = fs_rules[i].access & attr.handled_access_fs
         };
 
         if (landlock_add_rule(ruleset_fd, LANDLOCK_RULE_PATH_BENEATH, &path_attr, 0)) {
-            fatal_error_errno("failed to add filesystem rule");
+            fatal_error_errno("failed to add filesystem rule to file '%s'", path);
         }
 
         close(fd);

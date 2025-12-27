@@ -163,12 +163,13 @@ The `sst` filesystem restrictions restrict a lot of operations; the most permiss
 setting you can set (while also having filesystem sandboxing on at all) is this combo:
 
 ```c
-static const __u32 EXEC_WRITE_FILE_ACCESS =
+static const __u32 EXEC_WRITE_FILE_ACCESS_DIR =
     LANDLOCK_ACCESS_FS_EXECUTE |
     LANDLOCK_ACCESS_FS_READ_FILE |
     LANDLOCK_ACCESS_FS_READ_DIR |
     LANDLOCK_ACCESS_FS_WRITE_FILE |
-    LANDLOCK_ACCESS_FS_TRUNCATE;
+    LANDLOCK_ACCESS_FS_TRUNCATE |
+    LANDLOCK_ACCESS_FS_IOCTL_DEV;
 ```
 
 Landlock itself is much more fine-grained; so this is a missing feature in `sst`.

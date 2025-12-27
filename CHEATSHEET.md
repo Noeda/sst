@@ -22,7 +22,9 @@ $ sst option1 option2 optionN -- command arg1 arg2 argN
 - `PATH_BENEATH_EXEC_WRITE:<dir>`
 - `PATH_BENEATH_WRITE_EXEC:<dir>` [2]
 
-`FILE` must be used with regular files. `PATH_BENEATH` must be used with directories.
+`FILE` must be used with 'file-like' files (currently this means: regular
+files, block devices or character devices). `PATH_BENEATH` must be used with
+directories.
 
 [1] `EXEC` and `WRITE` also sets the `READ` permission.
 
