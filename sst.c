@@ -645,8 +645,8 @@ int main(int argc, char **argv, char *const *const envp) {
         }
     }
 
-    if (abi < 4) {
-        fatal_error("Landlock ABI version %d is too old; version 4 or later required for this tool", abi);
+    if (abi < 5) {
+        fatal_error("Landlock ABI version %d is too old; version 5 or later required for this tool", abi);
     }
 
     struct landlock_ruleset_attr attr = {0};
@@ -671,6 +671,10 @@ int main(int argc, char **argv, char *const *const envp) {
 
     switch (abi) {
         case 4:
+            // case 4 is dead code: I dropped ABI 4 support because I did not want to
+            // deal with complications of not having FS_IOCTL_DEV. I may or
+            // may not resurrect this (TODO: check how old is ABI 4 and is
+            // it worth making this work for however old it is).
             attr.handled_access_fs &= ~LANDLOCK_ACCESS_FS_IOCTL_DEV;
             __attribute__((fallthrough));
         case 5:
