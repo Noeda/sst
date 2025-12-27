@@ -198,50 +198,50 @@ static const __u32 EXEC_WRITE_FILE_ACCESS =
     LANDLOCK_ACCESS_FS_WRITE_FILE |
     LANDLOCK_ACCESS_FS_TRUNCATE;
 
-static void show_help(void) {
+static void show_help(FILE* out) {
     // This is basically CHEATSHEET.md but slightly better formatted for
     // the terminal.
-    printf("sst - Simple Sandboxer Tool\n");
-    printf("(c) 2025 Mikko Juola\n");
-    printf("Licensed under GPL3\n");
-    printf("\n");
-    printf("`sst` runs a program with sandboxing applied through the use of Linux Landlock API\n");
-    printf("You enable sandboxing for a specific feature, and then you specify an allowlist of\n");
-    printf("operations you want to allow.\n");
-    printf("\n");
-    printf("Usage:\n");
-    printf("\n");
-    printf("    sst option1 option2 optionN -- command arg1 arg2 argN\n");
-    printf("\n");
-    printf("Enable sandboxing for filesystem/networking:\n");
-    printf("\n");
-    printf("    ENABLE_FILESYSTEM_SANDBOXING\n");
-    printf("    ENABLE_NETWORK_SANDBOXING\n");
-    printf("\n");
-    printf("Filesystem-related permissions:\n");
-    printf("\n");
-    printf("    FILE_READ:<filepath>\n");
-    printf("    FILE_EXEC:<filepath>\n");
-    printf("    FILE_WRITE:<filepath>\n");
-    printf("    FILE_EXEC_WRITE:<filepath>\n");
-    printf("    FILE_WRITE_EXEC:<filepath>\n");
-    printf("    PATH_BENEATH_READ:<dir>\n");
-    printf("    PATH_BENEATH_EXEC:<dir>\n");
-    printf("    PATH_BENEATH_WRITE:<dir>\n");
-    printf("    PATH_BENEATH_EXEC_WRITE:<dir>\n");
-    printf("    PATH_BENEATH_WRITE_EXEC:<dir>\n");
-    printf("\n");
-    printf("FILE_* must be used with regular files. PATH_BENEATH_* must be used with directories.\n");
-    printf("\n");
-    printf("Networking-related permissions:\n");
-    printf("\n");
-    printf("    ALLOW_INCOMING_TCP_PORT:<port>\n");
-    printf("    ALLOW_OUTGOING_TCP_PORT:<port>\n");
-    printf("\n");
-    printf("Example that stops TCP networking for a shell (and anything ran in it):\n");
-    printf("\n");
-    printf("    sst ENABLE_NETWORK_SANDBOXING -- bash\n");
-    printf("\n");
+    fprintf(out, "sst - Simple Sandboxer Tool\n");
+    fprintf(out, "(c) 2025 Mikko Juola\n");
+    fprintf(out, "Licensed under GPL3\n");
+    fprintf(out, "\n");
+    fprintf(out, "`sst` runs a program with sandboxing applied through the use of Linux Landlock API\n");
+    fprintf(out, "You enable sandboxing for a specific feature, and then you specify an allowlist of\n");
+    fprintf(out, "operations you want to allow.\n");
+    fprintf(out, "\n");
+    fprintf(out, "Usage:\n");
+    fprintf(out, "\n");
+    fprintf(out, "    sst option1 option2 optionN -- command arg1 arg2 argN\n");
+    fprintf(out, "\n");
+    fprintf(out, "Enable sandboxing for filesystem/networking:\n");
+    fprintf(out, "\n");
+    fprintf(out, "    ENABLE_FILESYSTEM_SANDBOXING\n");
+    fprintf(out, "    ENABLE_NETWORK_SANDBOXING\n");
+    fprintf(out, "\n");
+    fprintf(out, "Filesystem-related permissions:\n");
+    fprintf(out, "\n");
+    fprintf(out, "    FILE_READ:<filepath>\n");
+    fprintf(out, "    FILE_EXEC:<filepath>\n");
+    fprintf(out, "    FILE_WRITE:<filepath>\n");
+    fprintf(out, "    FILE_EXEC_WRITE:<filepath>\n");
+    fprintf(out, "    FILE_WRITE_EXEC:<filepath>\n");
+    fprintf(out, "    PATH_BENEATH_READ:<dir>\n");
+    fprintf(out, "    PATH_BENEATH_EXEC:<dir>\n");
+    fprintf(out, "    PATH_BENEATH_WRITE:<dir>\n");
+    fprintf(out, "    PATH_BENEATH_EXEC_WRITE:<dir>\n");
+    fprintf(out, "    PATH_BENEATH_WRITE_EXEC:<dir>\n");
+    fprintf(out, "\n");
+    fprintf(out, "FILE_* must be used with regular files. PATH_BENEATH_* must be used with directories.\n");
+    fprintf(out, "\n");
+    fprintf(out, "Networking-related permissions:\n");
+    fprintf(out, "\n");
+    fprintf(out, "    ALLOW_INCOMING_TCP_PORT:<port>\n");
+    fprintf(out, "    ALLOW_OUTGOING_TCP_PORT:<port>\n");
+    fprintf(out, "\n");
+    fprintf(out, "Example that stops TCP networking for a shell (and anything ran in it):\n");
+    fprintf(out, "\n");
+    fprintf(out, "    sst ENABLE_NETWORK_SANDBOXING -- bash\n");
+    fprintf(out, "\n");
 }
 
 int main(int argc, char **argv, char *const *const envp) {
@@ -250,8 +250,9 @@ int main(int argc, char **argv, char *const *const envp) {
     // Is the user looking for help from their untimely demise? Or just
     // wanting to figure out wtf is 'sst' because they saw it in a shell
     // script somewhere. If yes, then print help, exit.
-    if (argc == 2 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) {
-        show_help();
+    if ((argc == 2 && (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0)) ||
+         argc == 1) {
+        show_help(stdout);
         exit(0);
     }
 
@@ -267,7 +268,7 @@ int main(int argc, char **argv, char *const *const envp) {
     for (int i1 = 1; i1 < sep_idx; i1++) {
         if (strcmp(argv[i1], "--help") == 0 ||
             strcmp(argv[i1], "-h") == 0) {
-            show_help();
+            show_help(stderr);
             exit(1);
         }
     }
