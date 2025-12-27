@@ -17,3 +17,6 @@ debug: build
 
 build:
 	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(SRC)
+
+clean:
+	rm -f $(EXECUTABLE)
